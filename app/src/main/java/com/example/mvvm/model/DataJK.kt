@@ -1,10 +1,8 @@
 package com.example.mvvm.model
+import com.example.mvvm.R
 
 
-object DataJK {
-    val Jenisk= listOf(
-                R.string.laki,
-                R.string.wanita
-    )
-
-}
+val JenisK: List<Int> = listOf(
+    R.string.laki,
+    R.string.wanita
+)

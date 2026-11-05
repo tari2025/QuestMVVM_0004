@@ -1,92 +1,91 @@
+
 package com.example.mvvm.view
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.example.mvvm.R
+import com.example.mvvm.model.Siswa
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormSiswa(
-    //edit 1 : parameter pilihanJK dan onSubmitButtonClicked
-    pilihanJK: List<String>,
-    onSubmitButtonClicked: (MutableList<String>) -> Unit,
-    modifier: Modifier = Modifier
+fun TampilSiswa(
+    statusUiSiswa: Siswa,
+    onBackButtonClicked: () -> Unit
 ) {
-    //edit 2 : tambahkan 4 variable dibawah ini
-    var txtNama by rememberSaveable { mutableStateOf("") }
-    var txtAlamat by remember { mutableStateOf("") }
-    var txtGender by remember { mutableStateOf("") }
-    val listData: MutableList<String> = mutableListOf(txtNama, txtGender, txtAlamat)
+    val items: List<Pair<String, String>> = listOf(
+        Pair(stringResource(R.string.nama), statusUiSiswa.nama),
+        Pair(stringResource(R.string.gender), statusUiSiswa.gender),
+        Pair(stringResource(R.string.alamat), statusUiSiswa.alamat)
+    )
 
-    Scaffold(modifier = Modifier,
-        { TopAppBar(title = { Text(stringResource(id = R.string.app_name), color = Color.White) },
-            colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = colorResource(id = R.color.purple_500))
-        )
-        }) { isiRuang ->
+    Scaffold(
+        modifier = Modifier,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.detail),
+                        color = Color.White
+                    )
+                },
+                colors = TopAppBarDefaults.mediumTopAppBarColors(
+                    containerColor = colorResource(R.color.purple_500)
+                )
+            )
+        }
+    ) { isiRuang ->
 
         Column(
             modifier = Modifier.padding(isiRuang),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            //edit 3 : value, onValueChange, selected, onClick
-            OutlinedTextField(
-                value = txtNama,
-                singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.width(250.dp).padding(top=20.dp),
-                label = { Text(text = "Nama Lengkap") },
-                onValueChange = {
-                    txtNama = it
-                }
-            )
-            HorizontalDivider(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .width(250.dp),
-                thickness = dimensionResource(R.dimen.thickness_divider),
-                color = Color.Blue
-            )
-            Row {
-                pilihanJK.forEach { item ->
-                    Row(modifier = Modifier.selectable(
-                        selected = txtGender == item,
-                        onClick = {
-                            txtGender = item
-                        }
-                    ),
-                        verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(
-                            selected = txtGender == item,
-                            onClick = {
-                                txtGender = item
-                            }
-                        )
-                        Text(item)
-                    }
-                }
-            }
-            HorizontalDivider(
-                modifier = Modifier
-                    .padding(5.dp)
-                    .width(250.dp),
-                thickness = dimensionResource(R.dimen.thickness_divider),
-                color = Color.Blue
-            )
-            OutlinedTextField(
-                value = txtAlamat,
-                singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.width(250.dp),
-                label = { Text(text = "Alamat Lengkap") },
-                onValueChange = {
-                    txtAlamat = it
-                }
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Button(
-                modifier = Modifier.fillMaxWidth(1f),
-                enabled = txtAlamat.isNotEmpty(),
-                onClick = {onSubmitButtonClicked(listData)}
+            Column(
+                modifier = Modifier.padding(
+                    dimensionResource(R.dimen.padding_medium)
+                ),
+                verticalArrangement = Arrangement.spacedBy(
+                    dimensionResource(R.dimen.padding_small)
+                )
             ) {
-                Text(stringResource(R.string.submit))
+                items.forEach { item ->
+                    Column {
+                        Text(
+                            text = item.first.uppercase(),
+                            fontSize = 16.sp
+                        )
+
+                        Text(
+                            text = item.second,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+
+                    HorizontalDivider(
+                        thickness = dimensionResource(R.dimen.thickness_divider)
+                    )
+                }
+
+                Spacer(
+                    modifier = Modifier.height(
+                        dimensionResource(R.dimen.padding_small)
+                    )
+                )
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = onBackButtonClicked
+                ) {
+                    Text(stringResource(R.string.back))
+                }
             }
         }
     }
