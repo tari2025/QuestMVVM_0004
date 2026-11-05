@@ -27,7 +27,6 @@ fun TampilSiswa(
     )
 
     Scaffold(
-        modifier = Modifier,
         topBar = {
             TopAppBar(
                 title = {
@@ -42,7 +41,6 @@ fun TampilSiswa(
             )
         }
     ) { isiRuang ->
-
         Column(
             modifier = Modifier.padding(isiRuang),
             verticalArrangement = Arrangement.SpaceBetween
@@ -70,7 +68,9 @@ fun TampilSiswa(
                     }
 
                     HorizontalDivider(
-                        thickness = dimensionResource(R.dimen.thickness_divider)
+                        thickness = dimensionResource(
+                            R.dimen.thickness_divider
+                        )
                     )
                 }
 
@@ -90,3 +90,5 @@ fun TampilSiswa(
         }
     }
 }
+
+
